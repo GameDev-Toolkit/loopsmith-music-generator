@@ -1,0 +1,81 @@
+@media (max-width: 1050px) {
+  .controls-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .shell {
+    width: min(100% - 20px, 680px);
+    padding-top: 8px;
+  }
+
+  .site-header {
+    min-height: 50px;
+  }
+
+  .status {
+    display: none;
+  }
+
+  .github-link span:last-child {
+    display: none;
+  }
+
+  .visual {
+    height: 96px;
+  }
+
+  .transport {
+    flex-wrap: wrap;
+  }
+
+  .session-meta {
+    order: 5;
+    justify-content: space-between;
+    width: 100%;
+    margin: 2px 0 0;
+    padding: 8px 3px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .controls-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .field.wide {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 470px) {
+  .brand small {
+    display: none;
+  }
+
+  .controls-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .transport .soft-btn {
+    flex: 1 1 calc(50% - 5px);
+  }
+
+  .play-btn {
+    flex: 1 1 100%;
+  }
+
+  .control-toggles {
+    display: block;
+  }
+
+  .sequence-title {
+    display: block;
+  }
+
+  .sequence-title span {
+    display: block;
+    margin-top: 5px;
+    text-align: left;
+  }
+}

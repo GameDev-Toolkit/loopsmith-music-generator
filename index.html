@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101114">
+  <meta name="description" content="Create, edit, preview, and export reproducible procedural music loops for games directly in your browser.">
+  <title>LoopSmith — Procedural Game Music</title>
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/app.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body>
+  <a class="skip-link" href="#studio">Skip to the music studio</a>
+
+  <div class="shell">
+    <header class="site-header">
+      <a class="brand" href="website/index.html" aria-label="Open the LoopSmith project page">
+        <span class="brand-mark" aria-hidden="true">LS</span>
+        <span><strong>LOOPSMITH</strong><small>procedural game music lab</small></span>
+      </a>
+
+      <div class="header-actions">
+        <div class="status" role="status" aria-live="polite">
+          <i class="status-dot" aria-hidden="true"></i>
+          <span id="audioStatus">Ready</span>
+        </div>
+        <a class="github-link" href="https://github.com/GamingToolset/loopsmith-music-generator" target="_blank" rel="noopener noreferrer" title="Open the GitHub repository">
+          <span class="github-mark" aria-hidden="true">&lt;/&gt;</span>
+          <span>GitHub repository</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="studio" id="studio">
+      <section class="panel signal-panel" aria-labelledby="signalTitle">
+        <div class="visual">
+          <span class="visual-label" id="signalTitle">Live signal</span>
+          <span class="visual-note" id="nowPlaying" aria-live="polite">—</span>
+          <canvas id="scope" aria-label="Live audio waveform">Your browser does not support the waveform canvas.</canvas>
+        </div>
+
+        <div class="transport" aria-label="Playback controls">
+          <button class="play-btn" id="play" type="button">
+            <span id="playIcon" aria-hidden="true">▶</span>
+            <span id="playText">Play</span>
+          </button>
+          <button class="soft-btn" id="generate" type="button">New loop · change everything</button>
+          <button class="soft-btn" id="exportWav" type="button">Export WAV</button>
+          <span class="time" id="transportTime">Bar 1/9 · Step 1/36</span>
+
+          <div class="session-meta" aria-label="Current loop summary">
+            <div><b id="metaKey">A major</b><span>Key</span></div>
+            <div><b id="metaLoop">15.2 s</b><span>Length</span></div>
+            <div><b id="metaProfile">Original</b><span>Character</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel melody-panel" aria-labelledby="melodyTitle">
+        <div class="sequence-wrap">
+          <div class="sequence-title">
+            <b id="melodyTitle">Melody</b>
+            <span id="melodyDetails">Game Arc · 36/36 notes</span>
+          </div>
+          <div class="step-grid" id="stepGrid" role="group" aria-label="Editable melody sequencer"></div>
+          <div class="beat-numbers" id="beatNumbers" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <div class="lower-grid">
+        <section class="panel settings-panel" aria-labelledby="settingsTitle">
+          <div class="panel-head">
+            <h2 id="settingsTitle">Sound settings</h2>
+            <small>36-step engine</small>
+          </div>
+
+          <div class="controls-grid">
+            <div class="field">
+              <div class="field-row"><label for="preset">Starting point</label></div>
+              <select id="preset">
+                <option value="random">Generated variation</option>
+                <option value="original" selected>Quiet puzzle</option>
+                <option value="calm">Calm puzzle</option>
+                <option value="arcade">Neon arcade</option>
+                <option value="mystery">Soft mystery</option>
+                <option value="focus">Clean focus</option>
+              </select>
+            </div>
+
+            <div class="field wide">
+              <div class="field-row"><label for="seed">Seed</label></div>
+              <div class="seed-wrap">
+                <input id="seed" type="text" value="swipe-dots-01" autocomplete="off">
+                <button class="icon-btn" id="newSeed" type="button" title="Generate a completely different loop" aria-label="Generate a completely different loop">↻</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="field-row"><label for="root">Root note</label></div>
+              <select id="root">
+                <option value="0">C</option><option value="1">C♯</option><option value="2">D</option><option value="3">D♯</option>
+                <option value="4">E</option><option value="5">F</option><option value="6">F♯</option><option value="7">G</option>
+                <option value="8">G♯</option><option value="9" selected>A</option><option value="10">A♯</option><option value="11">B</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <div class="field-row"><label for="scale">Scale</label></div>
+              <select id="scale">
+                <option value="majorPent">Major pentatonic</option>
+                <option value="minorPent">Minor pentatonic</option>
+                <option value="dorian">Dorian</option>
+                <option value="major">Major</option>
+              </select>
+            </div>
+
+            <div class="field"><div class="field-row"><label for="bpm">Tempo</label><output id="bpmOut">71 BPM</output></div><input id="bpm" type="range" min="55" max="150" value="71"></div>
+            <div class="field"><div class="field-row"><label for="energy">Energy</label><output id="energyOut">32%</output></div><input id="energy" type="range" min="0" max="100" value="32"></div>
+            <div class="field"><div class="field-row"><label for="density">Note density</label><output id="densityOut">88%</output></div><input id="density" type="range" min="68" max="100" value="88"></div>
+            <div class="field"><div class="field-row"><label for="brightness">Timbre brightness</label><output id="brightnessOut">35%</output></div><input id="brightness" type="range" min="0" max="100" value="35"></div>
+            <div class="field"><div class="field-row"><label for="space">Space</label><output id="spaceOut">14%</output></div><input id="space" type="range" min="0" max="100" value="14"></div>
+            <div class="field"><div class="field-row"><label for="swing">Swing</label><output id="swingOut">0%</output></div><input id="swing" type="range" min="0" max="35" value="0"></div>
+
+            <div class="control-toggles">
+              <div class="toggle-row"><span id="padLabel">Ambient pad</span><label class="switch"><input id="pad" type="checkbox" aria-labelledby="padLabel"><span aria-hidden="true"></span></label></div>
+              <div class="toggle-row"><span id="drumsLabel">Soft drums</span><label class="switch"><input id="drums" type="checkbox" aria-labelledby="drumsLabel"><span aria-hidden="true"></span></label></div>
+            </div>
+          </div>
+
+          <div class="sfx-strip" aria-label="Game sound effect previews">
+            <div class="sfx-label">Game SFX</div>
+            <button class="sfx-btn" type="button" data-sfx="tap">Tap</button>
+            <button class="sfx-btn" type="button" data-sfx="move">Move</button>
+            <button class="sfx-btn" type="button" data-sfx="deny">Deny</button>
+            <button class="sfx-btn" type="button" data-sfx="coin">Coin</button>
+            <button class="sfx-btn" type="button" data-sfx="win">Win</button>
+          </div>
+        </section>
+
+        <section class="panel handoff collapsed" aria-labelledby="handoffTitle">
+          <div class="panel-head">
+            <h2 id="handoffTitle">Game handoff</h2>
+            <button class="handoff-toggle" id="handoffToggle" type="button" aria-expanded="false" aria-controls="handoffBody">Expand</button>
+          </div>
+          <div class="handoff-body" id="handoffBody">
+            <p class="handoff-copy">This panel always contains the current loop. Copy the Agent tab and send it to the coding agent that has access to your game project.</p>
+            <div class="tabs" role="tablist" aria-label="Handoff format">
+              <button class="tab active" type="button" role="tab" aria-selected="true" data-tab="prompt">Agent</button>
+              <button class="tab" type="button" role="tab" aria-selected="false" data-tab="json">JSON</button>
+              <button class="tab" type="button" role="tab" aria-selected="false" data-tab="godot">Godot</button>
+            </div>
+            <textarea id="handoffText" readonly spellcheck="false" aria-label="Game handoff data"></textarea>
+            <div class="handoff-actions">
+              <button class="primary-btn" id="copyHandoff" type="button">Copy handoff</button>
+              <button class="soft-btn" id="downloadSpec" type="button" title="Download JSON">↓ JSON</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Copied</div>
+
+  <!-- Ordered classic scripts preserve direct file:// usage without a build step. -->
+  <script defer src="assets/js/config.js"></script>
+  <script defer src="assets/js/generator.js"></script>
+  <script defer src="assets/js/audio-engine.js"></script>
+  <script defer src="assets/js/export.js"></script>
+  <script defer src="assets/js/ui.js"></script>
+  <script defer src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+:root {
+  color-scheme: dark;
+  --background: #101114;
+  --panel: #16171b;
+  --panel-raised: #191a1f;
+  --surface: #121317;
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.18);
+  --text: #f7f4ec;
+  --muted: #a4a3ad;
+  --accent: #d8ff62;
+  --accent-2: #7b6cff;
+  --danger: #ff7e5d;
+  --radius: 12px;
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "SFMono-Regular", "Cascadia Mono", Consolas, "Liberation Mono", monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.045), transparent 38rem),
+    var(--background);
+  font-family: var(--font-sans);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+select,
+input[type="range"] {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 100;
+  padding: 10px 14px;
+  color: #11130c;
+  background: var(--accent);
+  border-radius: 8px;
+  font-weight: 800;
+  text-decoration: none;
+  transform: translateY(-160%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* Shared controls intentionally use restrained motion to keep the studio feeling precise. */
+.icon-btn,
+.soft-btn,
+.primary-btn,
+.play-btn,
+.sfx-btn,
+.tab {
+  border: 0;
+  color: var(--text);
+  background: #2a2b35;
+  transition: transform 150ms ease, background 150ms ease, color 150ms ease;
+}
+
+button:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.soft-btn {
+  padding: 10px 13px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.primary-btn {
+  padding: 11px 15px;
+  color: #11130c;
+  background: var(--accent);
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
